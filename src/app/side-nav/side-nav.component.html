@@ -1,0 +1,18 @@
+<div>
+    <mat-toolbar class="example-toolbar card">
+        <button mat-icon-button (click)="isShowing = !isShowing"><mat-icon style="color: white;">menu</mat-icon></button>
+        <h2 class="example-app-name">Assessment Portal</h2>
+    </mat-toolbar>
+    <mat-sidenav-container class="example-container card" autosize>
+        <mat-sidenav #sidenav class="example-sidenav" mode="side" opened="true">
+            <mat-nav-list>
+                <p *ngIf="selectedMenu == 'dashboard'" (click)="menuSelected('dashboard')" style="cursor: pointer; background-color: white; color: blueviolet;" routerLink="dashboard" class="menu-list-item inner-card"><mat-icon>dashboard</mat-icon><span style="margin-left: 5px;" *ngIf="isShowing">Dashboard</span></p>
+                <p *ngIf="selectedMenu != 'dashboard'" (click)="menuSelected('dashboard')" style="cursor: pointer; color: white;" routerLink="dashboard" class="menu-list-item inner-card"><mat-icon>dashboard</mat-icon><span style="margin-left: 5px;" *ngIf="isShowing">Dashboard</span></p>
+                <p *ngIf="selectedMenu == 'attemptQuestion'" (click)="menuSelected('attemptQuestion')" style="cursor: pointer; background-color: white; color: blueviolet;" routerLink="attempt-question" class="menu-list-item inner-card"><mat-icon>question_answer</mat-icon><span style="margin-left: 5px;" *ngIf="isShowing">Attempt Question </span></p>
+                <p *ngIf="selectedMenu != 'attemptQuestion'" (click)="menuSelected('attemptQuestion')" style="cursor: pointer; color: white;" routerLink="attempt-question" class="menu-list-item inner-card"><mat-icon>question_answer</mat-icon><span style="margin-left: 5px;" *ngIf="isShowing">Attempt Question
+                </span></p>
+            </mat-nav-list>
+        </mat-sidenav>
+            <router-outlet></router-outlet>
+    </mat-sidenav-container>
+</div>
