@@ -2,15 +2,19 @@
     <div class="card">
         <div style="display: flex; justify-content: center;">
             <!-- <p style="width: 80%; color: white; margin: 0;"><span style="background-color: blueviolet; padding: 10px; text-align: center;" class="inner-card"><mat-icon>dashboard</mat-icon>Dashboard</span></p> -->
-            <p style="padding: 5px; cursor: pointer; background-color: blueviolet; color: white;" routerLink="dashboard" class="menu-list-item card-header"><mat-icon>question_answer</mat-icon><span style="margin-left: 5px;">Attempt Questions</span></p>
-                
+            <p style="padding: 5px; cursor: pointer; background-color: blueviolet; color: white;" routerLink="dashboard"
+                class="menu-list-item card-header"><mat-icon>question_answer</mat-icon><span
+                    style="margin-left: 5px;">Attempt Questions</span></p>
+
         </div>
         <div *ngIf="isVisible" style="display: flex; justify-content: center; width: 100%;">
             <div style="width: 100%;">
                 <div>
-                    <input mat-input class="card-search" style="padding: 10px; width: 15%;" (keyup)="applyFilter($event)" placeholder="Search" #input>
-    
-                    <table  style="width: 100%; border: 1px solid black; margin-top: 10px;" mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+                    <input mat-input class="card-search" style="padding: 10px; width: 15%;"
+                        (keyup)="applyFilter($event)" placeholder="Search" #input>
+
+                    <table style="width: 100%; border: 1px solid black; margin-top: 10px;" mat-table
+                        [dataSource]="dataSource" class="mat-elevation-z8">
 
                         <!--- Note that these columns can be defined in any order.
                             The actual rendered columns are set as a property on the row definition" -->
@@ -21,35 +25,52 @@
                             <td mat-cell *matCellDef="let element"> {{element.position}} </td>
                         </ng-container>
 
-                        <!-- Name Column -->
-                        <ng-container matColumnDef="assessmentId">
-                            <th mat-header-cell *matHeaderCellDef> Assessment Id </th>
-                            <td mat-cell *matCellDef="let element"> {{element.assessmentId}} </td>
-                        </ng-container>
-
                         <!-- Weight Column -->
                         <ng-container matColumnDef="question">
                             <th mat-header-cell *matHeaderCellDef> Question </th>
                             <td mat-cell *matCellDef="let element"> {{element.question}} </td>
                         </ng-container>
 
+                        <!-- Name Column -->
+                        <ng-container matColumnDef="nlp_answer">
+                            <th mat-header-cell *matHeaderCellDef> Answer From NLP </th>
+                            <td mat-cell *matCellDef="let element"> {{element.nlp_answer}} </td>
+                        </ng-container>
+
                         <!-- Symbol Column -->
                         <ng-container matColumnDef="given_answer">
-                            <th mat-header-cell *matHeaderCellDef> Given Answer </th>
+                            <th mat-header-cell *matHeaderCellDef> Answer From Student </th>
                             <td mat-cell *matCellDef="let element"> {{element.given_answer}} </td>
                         </ng-container>
 
-                        <tr style="background-color: lightgray;" mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <!-- Result Column -->
+                        <ng-container matColumnDef="result">
+                            <th mat-header-cell *matHeaderCellDef> Result(%) </th>
+                            <td mat-cell *matCellDef="let element" style="text-align: center;">
+                                {{element.result}}
+                                <span *ngIf="isGreaterThanOrPassingPercentage(element.result)" style="color: green; font-weight: bold;"> P</span>
+                                <span *ngIf="!isGreaterThanOrPassingPercentage(element.result)" style="color: red;  font-weight: bold;"> F</span>
+                            </td> 
+                        </ng-container>
+
+                        <tr style="background-color: lightgray;" mat-header-row *matHeaderRowDef="displayedColumns">
+                        </tr>
                         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
                         <!-- Row shown when there is no matching data. -->
                         <tr class="mat-row" *matNoDataRow>
-                            <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+                            <td class="mat-cell" colspan="5">No data matching the filter "{{input.value}}"</td>
                         </tr>
                     </table>
-                
+
+                    <div>
+                        <p style="font-weight: bold; margin-bottom: 0;">Results</p>
+                        <p style="margin: 0; margin-left: 20px;">Total: <span style="font-weight: bold; color: blueviolet;">{{calculateTotalPercentage(ASSESTMENT)}}%</span></p>
+                        <p style="margin: 0; margin-left: 20px;">Status: <span *ngIf="!isOverAllResultPass" style="font-weight: bold; color: red;">Fail</span><span *ngIf="isOverAllResultPass" style="font-weight: bold; color: green;">Pass</span></p>
+                    </div>
                     <!-- <mat-paginator length="5" [pageSize]="5" aria-label="Select page of GitHub search results"></mat-paginator> -->
-                    </div>
-                    </div>
-                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

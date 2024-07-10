@@ -1,5 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
+import { NavigationEnd, Router } from '@angular/router';
 
 @Component({
   selector: 'app-side-nav',
@@ -13,6 +14,26 @@ export class SideNavComponent {
   showSubSubMenu: boolean = false;
   selectedMenu: string = "dashboard";
   @ViewChild('sidenav') sidenav!: MatSidenav;
+  currentUrl: string;
+  email!: string;
+  constructor(private router: Router) {
+    this.currentUrl = '';
+  }
+
+  ngOnInit(): void {
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        this.currentUrl = event.urlAfterRedirects;
+        console.log(this.currentUrl)
+        this.email = localStorage.getItem("email") ?? '';
+      }
+    });
+  }
+
+  signOut(){
+    localStorage.clear();
+    this.router.navigateByUrl('/auth/sign-in');
+  }
 
   // mouseenter() {
   //   if (!this.isExpanded) {
@@ -26,7 +47,8 @@ export class SideNavComponent {
   //   }
   // }
 
-  menuSelected(menuName: string){
+  menuSelected(menuName: string) {
     this.selectedMenu = menuName;
+
   }
 }
